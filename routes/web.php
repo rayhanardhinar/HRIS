@@ -2,6 +2,14 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\{
+    PekerjaanController,
+    GajiController,
+    CutiController,
+    LemburController,
+    PresensiController,
+    KaryawanController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +39,26 @@ Route::middleware(['auth'])->get('/dashboard', function () {
 
     return view('dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth', 'role:admin|manager'])->group(function () {
+    // Pekerjaan
+    Route::resource('/pekerjaan', PekerjaanController::class)->except(['show']);
+
+    // Gaji
+    Route::resource('/gaji', GajiController::class)->except(['show']);
+
+    // Cuti
+    Route::resource('/cuti', CutiController::class)->except(['show']);
+
+    // Lembur
+    Route::resource('/lembur', LemburController::class)->except(['show']);
+
+    // Presensi
+    Route::resource('/presensi', PresensiController::class)->except(['show']);
+
+    // Karyawan
+    Route::resource('/karyawan', KaryawanController::class)->except(['show']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

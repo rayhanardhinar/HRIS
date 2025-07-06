@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Karyawan\{
+    GajiKaryawanController,
+};
 use App\Http\Controllers\Admin\{
     PekerjaanController,
     GajiController,
@@ -40,6 +44,10 @@ Route::middleware(['auth'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('/user', UserController::class)->except(['show']);
+});
+
 Route::middleware(['auth', 'role:admin|manager'])->group(function () {
     // Pekerjaan
     Route::resource('/pekerjaan', PekerjaanController::class)->except(['show']);
@@ -58,6 +66,10 @@ Route::middleware(['auth', 'role:admin|manager'])->group(function () {
 
     // Karyawan
     Route::resource('/karyawan', KaryawanController::class)->except(['show']);
+});
+
+Route::middleware(['auth', 'role:karyawan'])->group(function () {
+    Route::get('/gaji', [GajiKaryawanController::class, 'index'])->name('gaji.index');
 });
 
 Route::middleware('auth')->group(function () {

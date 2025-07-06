@@ -11,51 +11,77 @@
                 </div>
 
                 <!-- Navigation Links -->
-                @role('admin')
+                @php
+                    $navLinks = [
+                        'admin' => [
+                            ['label' => 'Dashboard', 'route' => 'dashboard'],
+                            ['label' => 'Pekerjaan', 'route' => 'pekerjaan.index'],
+                            ['label' => 'Gaji', 'route' => 'gaji.index'],
+                            ['label' => 'Cuti', 'route' => 'cuti.index'],
+                            ['label' => 'Lembur', 'route' => 'lembur.index'],
+                            ['label' => 'Presensi', 'route' => 'presensi.index'],
+                            ['label' => 'Karyawan', 'route' => 'karyawan.index'],
+                            ['label' => 'User', 'route' => 'user.index'],
+                        ],
+                        'manager' => [
+                            ['label' => 'Dashboard', 'route' => 'dashboard'],
+                            ['label' => 'Pekerjaan', 'route' => 'pekerjaan.index'],
+                            ['label' => 'Gaji', 'route' => 'gaji.index'],
+                            ['label' => 'Cuti', 'route' => 'cuti.index'],
+                            ['label' => 'Lembur', 'route' => 'lembur.index'],
+                            ['label' => 'Presensi', 'route' => 'presensi.index'],
+                            ['label' => 'Karyawan', 'route' => 'karyawan.index'],
+                        ],
+                        'karyawan' => [
+                            ['label' => 'Dashboard', 'route' => 'dashboard'],
+                            ['label' => 'Pekerjaan', 'route' => 'pekerjaan.index'],
+                            ['label' => 'Gaji', 'route' => 'gaji.index'],
+                            ['label' => 'Cuti', 'route' => 'cuti.index'],
+                            ['label' => 'Lembur', 'route' => 'lembur.index'],
+                            ['label' => 'Presensi', 'route' => 'presensi.index'],
+                        ],
+                    ];
+
+                    $role = auth()->user()->getRoleNames()->first();
+                    $links = $navLinks[$role] ?? [];
+                @endphp
+
+                @if ($links)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('pekerjaan.index')" :active="request()->routeIs('pekerjaan.*')">
-                            {{ __('Pekerjaan') }}
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('gaji.index')" :active="request()->routeIs('gaji.*')">
-                            {{ __('Gaji') }}
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('cuti.index')" :active="request()->routeIs('cuti.*')">
-                            {{ __('Cuti') }}
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('lembur.index')" :active="request()->routeIs('lembur.*')">
-                            {{ __('Lembur') }}
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('presensi.index')" :active="request()->routeIs('presensi.*')">
-                            {{ __('Presensi') }}
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('karyawan.index')" :active="request()->routeIs('karyawan.*')">
-                            {{ __('Karyawan') }}
-                        </x-nav-link>
+                        @foreach ($links as $link)
+                            <x-nav-link :href="route($link['route'])" :active="request()->routeIs($link['route'])">
+                                {{ __($link['label']) }}
+                            </x-nav-link>
+                        @endforeach
+                    </div>
+                @endif
+                {{-- @role('admin')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        @foreach ($links as $link)
+                            <x-nav-link :href="route($link['route'])" :active="request()->routeIs($link['route'])">
+                                {{ __($link['label']) }}
+                            </x-nav-link>
+                        @endforeach
                     </div>
                 @endrole
                 @role('manager')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
+                        @foreach ($links as $link)
+                            <x-nav-link :href="route($link['route'])" :active="request()->routeIs($link['route'])">
+                                {{ __($link['label']) }}
+                            </x-nav-link>
+                        @endforeach
                     </div>
                 @endrole
                 @role('karyawan')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
+                        @foreach ($links as $link)
+                            <x-nav-link :href="route($link['route'])" :active="request()->routeIs($link['route'])">
+                                {{ __($link['label']) }}
+                            </x-nav-link>
+                        @endforeach
                     </div>
-                @endrole
+                @endrole --}}
             </div>
 
             <!-- Settings Dropdown -->

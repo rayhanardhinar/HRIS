@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Models\Department;
 
 class UserController extends Controller
 {
@@ -15,6 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')->get();
+        $departments = Department::all();
         return view('admin.user.index', compact('users'));
     }
 
@@ -24,7 +26,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('admin.user.form', compact('roles'));
+        $departments = Department::all();
+        return view('admin.user.form', compact('roles', 'departments'));
     }
 
     /**
@@ -36,12 +39,14 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
+            'department_id' => 'required|exists:departments,id',
             'role' => 'required|exists:roles,name',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'department_id' => $validated['department_id'],
             'password' => bcrypt($validated['password']),
         ]);
 
@@ -56,7 +61,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin.user.form', compact('user', 'roles'));
+        $departments = Department::all();
+        return view('admin.user.form', compact('user', 'roles', 'departments'));
     }
 
     /**
@@ -67,15 +73,13 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|exists:roles,name',
+
         ]);
 
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
         ]);
-
-        $user->syncRoles([$validated['role']]);
 
         return redirect()->route('user.index')->with('success', 'User berhasil diperbarui.');
     }

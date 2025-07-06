@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Manajemen User</h2>
+        <h2 class="font-semibold text-xl text-white">Manajemen User</h2>
     </x-slot>
 
     <div class="p-6 bg-white">
@@ -10,6 +10,7 @@
                 <tr>
                     <th>Nama</th>
                     <th>Email</th>
+                    <th>Departemen</th>
                     <th>Role</th>
                     <th>Aksi</th>
                 </tr>
@@ -19,6 +20,7 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ optional($user->department)->name ?? '-' }}</td>
                         <td>{{ $user->getRoleNames()->join(', ') }}</td>
                         <td>
                             <a href="{{ route('user.edit', $user) }}" class="text-blue-600">Edit</a> |

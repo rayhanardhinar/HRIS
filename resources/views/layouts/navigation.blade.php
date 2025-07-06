@@ -22,6 +22,7 @@
                             ['label' => 'Presensi', 'route' => 'presensi.index'],
                             ['label' => 'Karyawan', 'route' => 'karyawan.index'],
                             ['label' => 'User', 'route' => 'user.index'],
+                            ['label' => 'Departemen', 'route' => 'department.index'],
                         ],
                         'manager' => [
                             ['label' => 'Dashboard', 'route' => 'dashboard'],

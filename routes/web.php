@@ -12,7 +12,8 @@ use App\Http\Controllers\Admin\{
     CutiController,
     LemburController,
     PresensiController,
-    KaryawanController
+    KaryawanController,
+    DepartmentController
 };
 
 /*
@@ -66,6 +67,9 @@ Route::middleware(['auth', 'role:admin|manager'])->group(function () {
 
     // Karyawan
     Route::resource('/karyawan', KaryawanController::class)->except(['show']);
+
+    // Departemen
+    Route::resource('/department', DepartmentController::class)->except(['show']);
 });
 
 Route::middleware(['auth', 'role:karyawan'])->group(function () {
